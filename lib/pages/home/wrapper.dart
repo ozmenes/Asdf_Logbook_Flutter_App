@@ -8,7 +8,7 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? uid;
-    //uid = "";
+    uid = "";
     if(uid ==null){
       return const WelcomePage();
     }else{

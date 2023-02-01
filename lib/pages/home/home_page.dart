@@ -1,18 +1,20 @@
-import 'package:asdf_logbook/utils/shared/constants.dart';
+import 'package:asdf_logbook/utils/widgets/base_page.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends BasePage {
+  const HomePage({Key? key}) : super(key: key,headerTitleText: 'Logbook');
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: whiteColor,
-        child: const Center(
-          child: Text('Hi'),
-        ),
-      ),
-    );
+  HomePageState createState() => HomePageState();
+}
+
+class HomePageState extends BasePageState<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+  @override
+  Widget buildPageUI(){
+    return Container();
   }
 }
