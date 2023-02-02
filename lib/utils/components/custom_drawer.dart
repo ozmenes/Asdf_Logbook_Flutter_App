@@ -1,3 +1,4 @@
+import 'package:asdf_logbook/pages/home/welcome_page.dart';
 import 'package:asdf_logbook/utils/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -112,7 +113,7 @@ class CustomDrawer extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.sunny)),
+                    IconButton(onPressed: () {}, icon: Icon(isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,)),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Container()//LanguagePicker(),
@@ -128,8 +129,7 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (builder) =>  Container()//WelcomePage()
-                          ));
+                              builder: (builder) => const WelcomePage()));
                     },
                     height: 42,
                     minWidth: MediaQuery.of(context).size.width * 0.85,

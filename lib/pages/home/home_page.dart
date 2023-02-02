@@ -9,6 +9,7 @@ class HomePage extends BasePage {
 }
 
 class HomePageState extends BasePageState<HomePage> {
+  late bool isDarkMode;
   @override
   void initState() {
     super.initState();
