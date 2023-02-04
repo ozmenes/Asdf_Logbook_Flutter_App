@@ -36,7 +36,10 @@ class BasePageState<T extends BasePage> extends State<T> {
         child: buildAppBar(widget.headerTitleText),
       ),
       body: SafeArea(
-        child: buildPageUI(),
+        child: Padding(
+          padding: const EdgeInsets.all(defaultPadding/2),
+          child: buildPageUI(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(context,

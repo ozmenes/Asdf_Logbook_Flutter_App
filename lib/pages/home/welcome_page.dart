@@ -1,3 +1,5 @@
+import 'package:asdf_logbook/pages/auth/login/login_page.dart';
+import 'package:asdf_logbook/pages/auth/register/registration_driver_company.dart';
 import 'package:asdf_logbook/utils/shared/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -100,7 +102,7 @@ class WelcomePage extends StatelessWidget {
                           Navigator.push(context, MaterialPageRoute(builder: (builder)=> const RegisterDriverOrCompany()));
                         },
                         child: const Text(
-                          'Create a user',
+                          'Registration',
                           style: TextStyle(color: whiteColor,fontWeight: FontWeight.bold,),
                         ),
                       ),
@@ -111,21 +113,5 @@ class WelcomePage extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-class RegisterDriverOrCompany extends StatelessWidget {
-  const RegisterDriverOrCompany({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
