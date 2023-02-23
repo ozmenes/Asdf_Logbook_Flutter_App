@@ -4,6 +4,7 @@ const defaultPadding = 16.0;
 
 const bgColor = Color(0xFF363A46);
 const blackColor = Color(0xFF060607);
+const darkGreyColor = Color(0xFF3D3C42);
 const greyColor = Color(0xFF7D7D82);
 const blueColor = Color(0xFF0024F1);
 const darkBlueColor  = Color(0xFF001AA8);
