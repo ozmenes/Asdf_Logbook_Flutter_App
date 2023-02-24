@@ -1,4 +1,3 @@
-import 'package:asdf_logbook/utils/shared/constants.dart';
 import 'package:asdf_logbook/utils/widgets/base_page.dart';
 import 'package:flutter/material.dart';
 
@@ -11,50 +10,85 @@ class HomePage extends BasePage {
 
 class HomePageState extends BasePageState<HomePage> {
   late bool isDarkMode;
+  final formKey = GlobalKey<FormState>();
+  final licenceCheckController = TextEditingController();
+  final String licenceText = 'company_licence';
   @override
   void initState() {
     super.initState();
   }
   @override
   Widget buildPageUI(){
-    final size = MediaQuery.of(context).size;
+    //final size = MediaQuery.of(context).size;
     return Column(
       children: [
-        // Last or Current Drive
-        Container(
-          color: blackColor.withOpacity(.3),
-          width: size.width,
-          height: 200,
-          padding: const EdgeInsets.all(defaultPadding),
+        Form(
+          key: formKey,
           child: Column(
             children: [
-
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.drive_eta_rounded,
-                        color: Colors.green,size: 32,
-                      ),
-                      Text(
-                        "Driving",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: blackColor,
-                          fontWeight: FontWeight.w600,
+                  //Text(licenceText),
+                  Expanded(
+                    child: TextFormField(
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: licenceText,
+                        //border: OutlineInputBorder(),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              width: 3, color: Colors.blue),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  IconButton(onPressed: (){}, icon: const Icon(Icons.directions,size: 32,))
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.copy))
                 ],
-              )
+              ),
+              const SizedBox(height: 8,),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: licenceCheckController,
+                      decoration: InputDecoration(
+                        labelText:"Enter your licence to activate",
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              width: 3, color: Colors.blue),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                        }
+                      },
+                      icon: const Icon(Icons.search))
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      'Licence successfully saved.',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
-        ),
+        )
       ],
     );
   }
