@@ -24,7 +24,12 @@ class RegisterDriverOrCompany extends StatelessWidget {
                   backgroundColor: darkBlueColor,
                   radius: 70,
                   child: InkWell(
-                    onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (builder)=> const RegistrationPage(isAccountCompany: true,))),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => const RegistrationPage(
+                                  isAccountCompany: true,
+                                ))),
                     child: SizedBox(
                       height: 90,
                       width: 100,
@@ -53,7 +58,12 @@ class RegisterDriverOrCompany extends StatelessWidget {
                   backgroundColor: darkBlueColor,
                   radius: 70,
                   child: InkWell(
-                    onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (builder)=> const RegistrationPage(isAccountCompany: false,))),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => const RegistrationPage(
+                                  isAccountCompany: false,
+                                ))),
                     child: SizedBox(
                       height: 90,
                       width: 100,

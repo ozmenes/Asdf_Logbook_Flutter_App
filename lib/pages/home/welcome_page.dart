@@ -80,10 +80,16 @@ class WelcomePage extends StatelessWidget {
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                           ),
                         ),
-                        onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (builder)=> const LoginPage())),
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => const LoginPage())),
                         child: const Text(
                           'Login',
-                          style: TextStyle(color: blueColor,fontWeight: FontWeight.bold,),
+                          style: TextStyle(
+                            color: blueColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -99,11 +105,18 @@ class WelcomePage extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (builder)=> const RegisterDriverOrCompany()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (builder) =>
+                                      const RegisterDriverOrCompany()));
                         },
                         child: const Text(
                           'Registration',
-                          style: TextStyle(color: whiteColor,fontWeight: FontWeight.bold,),
+                          style: TextStyle(
+                            color: whiteColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
