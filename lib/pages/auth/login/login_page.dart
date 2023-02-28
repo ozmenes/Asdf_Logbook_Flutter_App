@@ -15,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool isChecked  = false;
+  bool isChecked = false;
   final String loginError = 'could not sign in with those credentials.';
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,8 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                           const Text('Remember me!'),
-                        ],),
+                        ],
+                      ),
                     ),
                     Align(
                         alignment: Alignment.centerRight,
@@ -108,7 +109,6 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 10,
                 ),
-
                 Row(
                   children: [
                     Expanded(
@@ -122,12 +122,12 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                           ),
                         ),
-                        onPressed: () async{
-                          if(formKey.currentState!.validate()){
-                            var result='';
-                            if(result.isNotEmpty){
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            var result = '';
+                            if (result.isNotEmpty) {
                               debugPrint(loginError);
-                            }else{
+                            } else {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -136,8 +136,6 @@ class _LoginPageState extends State<LoginPage> {
                             debugPrint('valid');
                           }
                           debugPrint('Logged in');
-
-
                         },
                         child: const Text(
                           'Login',
@@ -161,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (builder) =>
-                                  const RegisterDriverOrCompany()));
+                                      const RegisterDriverOrCompany()));
                           debugPrint('first');
                         },
                         child: const Text('First time here?',

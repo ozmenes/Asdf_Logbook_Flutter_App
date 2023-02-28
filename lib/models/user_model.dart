@@ -19,54 +19,41 @@ class UserModel {
       this.userAddress,
       this.companyLicenceKey});
   Map<String, dynamic> toJson() {
-    return {'uid': uid};
+    return {
+      'uid': uid,
+      'userName': userName ?? '',
+      'password': password ?? '',
+      'userEmail': userEmail ?? '',
+      'userPhone': userPhone ?? '',
+      'userAddress': userAddress ?? '',
+      'licence': companyLicenceKey ?? ''
+    };
   }
 
-  UserModel.fromJson(Map<String, dynamic> json) : uid = json['uid'];
-
-  // UserModel.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc)
-  //     : uid = doc.id,
-  //       userName = doc.data()?['userName'] ?? '',
-  //       password = doc.data()?['password'] ?? '',
-  //       userEmail = doc.data()?['userEmail'] ?? '',
-  //       userPhone = doc.data()?['userPhone'] ?? '',
-  //       userAddress = doc.data()?['userAddress'] ?? '',
-  //       companyLicenceKey = doc.data()!['companyLicenceKey'] ?? '';
+  UserModel.fromJson(Map<String, dynamic> json)
+      : uid = json['uid'],
+        userName = json['userName'] ?? '',
+        password = json['password'] ?? '',
+        userEmail = json['userEmail'] ?? '',
+        userPhone = json['userPhone'] ?? '',
+        userAddress = json['userAddress'] ?? '',
+        companyLicenceKey = json['companyLicenceKey'] ?? '';
 
   factory UserModel.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) =>
       UserModel.fromJson(doc.data()!);
 
-  // uid: doc.id,
-  // userName: doc.data()?['userName'] ?? '',
-  // password: doc.data()?['password'] ?? '',
-  // userEmail: doc.data()?['userEmail'] ?? '',
-  // userPhone: doc.data()?['userPhone'] ?? '',
-  // userAddress: doc.data()?['userAddress'] ?? '',
-  // companyLicenceKey= doc.data()!['companyLicenceKey'] ?? '';
-
-  // UserModel(
-  //     uid: doc.id,
-  //     userName: doc.data()?['userName'] ?? '',
-  //     password: doc.data()?['password'] ?? '',
-  //     userEmail: doc.data()?['userEmail'] ?? '',
-  //     userPhone: doc.data()?['userPhone'] ?? '',
-  //     userAddress: doc.data()?['userAddress'] ?? '',
-  //     companyLicenceKey: doc.data()?['companyLicenceKey'] ?? ''
-  // );
 }
 
 class UserService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   final CollectionReference<Map<String, dynamic>> userRef =
   FirebaseFirestore.instance.collection('users');
   final CollectionReference<Map<String, dynamic>> companyRef =
   FirebaseFirestore.instance.collection('companies');
-
   UserModel? userModel;
+
   Future<String?> addUser(Map<String, dynamic> data) async {
     String uid = _auth.currentUser?.uid ?? '';
-    userModel!.uid = uid;
     await userRef.doc(uid).set(data).then((value)async{
       var company = await companyRef.doc(uid).set({'uid':uid,'licence':uid});
       return company;

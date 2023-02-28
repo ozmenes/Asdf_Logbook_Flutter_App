@@ -1,9 +1,9 @@
-import 'package:asdf_logbook/models/subscription_type.dart';
 import 'package:asdf_logbook/models/user_auth_model.dart';
 import 'package:asdf_logbook/models/user_model.dart';
 import 'package:asdf_logbook/pages/home/welcome_page.dart';
 import 'package:asdf_logbook/utils/components/validator_service.dart';
 import 'package:asdf_logbook/utils/shared/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -27,15 +27,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final phoneNumberController = TextEditingController();
   final addressController = TextEditingController();
   final numberOfVehicleController = TextEditingController();
-  List<Subscription> subscription = <Subscription>[];
+  //List<Subscription> subscription = <Subscription>[];
   late String? subscriptionType;
   final UserAuthService userAuthService = UserAuthService();
   final UserService userService = UserService();
-  UserModel? user;
+  late UserModel user;
+  late String currentUid;
   @override
   void initState() {
+    final FirebaseAuth auth = FirebaseAuth.instance;
     debugPrint("isAccountCompany ${widget.isAccountCompany}");
-    subscription.add(Subscription("Free", '-', false));
+    //subscription.add(Subscription("Free", '-', false));
+    user = UserModel();
+     currentUid =  auth.currentUser?.uid ?? '';
     super.initState();
   }
 
@@ -76,42 +80,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
               currentStep: currentStep,
               onStepContinue: () async {
                 /// send data to server
-                if (formKey.currentState!.validate()) {
-                  if (isTermsAndConditionsAgree == true) {
-                    createUser();
-                    debugPrint('User creation has been completed.');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (builder) => const WelcomePage()));
+                final isLastStep = currentStep == getSteps().length - 1;
+                if (isLastStep) {
+                  if (formKey.currentState!.validate()) {
+                    if (isTermsAndConditionsAgree == true) {
+                      createUser();
+                      debugPrint('User creation has been completed.');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => const WelcomePage()));
+                    } else {
+                      return debugPrint('isTermsAndConditionsAgree error');
+                    }
                   } else {
-                    return debugPrint('isTermsAndConditionsAgree error');
+                    return debugPrint('Validation error');
                   }
                 } else {
-                  return debugPrint('Validation error');}
-                // final isLastStep = currentStep == getSteps().length - 1;
-                // if (isLastStep) {
-                //   if (widget.isAccountCompany == false) {
-                //     ownerNamedController.text = '';
-                //     numberOfVehicleController.text = '';
-                //   }
-                //   if (formKey.currentState!.validate()) {
-                //     if (isTermsAndConditionsAgree == true) {
-                //       createUser();
-                //       debugPrint('User creation has been completed.');
-                //       Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //               builder: (builder) => const WelcomePage()));
-                //     } else {
-                //       return debugPrint('isTermsAndConditionsAgree error');
-                //     }
-                //   } else {
-                //     return debugPrint('Validation error');
-                //   }
-                // } else {
-                //   setState(() => currentStep += 1);
-                // }
+                  setState(() => currentStep += 1);
+                }
               },
               onStepCancel: currentStep == 0
                   ? null
@@ -434,45 +421,37 @@ class _RegistrationPageState extends State<RegistrationPage> {
     ];
   }
 
-  Color getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return Colors.blue;
-    }
-    return Colors.red;
-  }
-
-  Future createUser() async {
+  Future<void> createUser() async {
     try {
       // registerWithEmailAndPassword
-      dynamic userResult = await userAuthService.registerWithEmailAndPassword(emailController.text, passwordController.text);
-      debugPrint('username: ${emailController.text} pass: ${passwordController.text}');
+      dynamic userRegResult =
+          await userAuthService.registerWithEmailAndPassword(
+              emailController.text, passwordController.text);
+      debugPrint(
+          'username: ${emailController.text} pass: ${passwordController.text}');
       // create user and save info
-      var uid= await userService.addUser(user!.toJson());
-      user!.uid = uid;
-
-      if(userResult == null){
-        debugPrint("userResult error : $userResult");
-
-      }else{
+      user.uid = currentUid;
+      user.companyLicenceKey = currentUid;
+      user.userEmail = emailController.text;
+      user.password = passwordController.text;
+      user.userName = ownerNamedController.text;
+      user.userPhone = phoneNumberController.text;
+      user.userAddress = addressController.text;
+      var id = await userService.addUser(user.toJson());
+      debugPrint('user added. $id');
+      if (userRegResult == null) {
+        debugPrint("userReg Result error : $userRegResult");
+        //debugPrint("user add to db error : $uid");
+      }
+      else {
         // signOut
         await userAuthService.signOut(context);
       }
-
-      debugPrint(userNameController.text +
-          ownerNamedController.text +
-          emailController.text +
-          phoneNumberController.text +
-          addressController.text +
-          subscriptionType! +
-          numberOfVehicleController.text);
-      Navigator.pushNamed(context, '/home',arguments: uid);
+      return userRegResult;
+      //Navigator.pushNamed(context, '/home', arguments: uid);
     } catch (e) {
       debugPrint("Registration error : $e");
     }
   }
 }
+// eneszmn@hotmail.com
