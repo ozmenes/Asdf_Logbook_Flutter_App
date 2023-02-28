@@ -1,3 +1,4 @@
+import 'package:asdf_logbook/models/user_auth_model.dart';
 import 'package:asdf_logbook/pages/home/wrapper.dart';
 import 'package:asdf_logbook/providers/theme_provider.dart';
 import 'package:asdf_logbook/utils/shared/my_theme.dart';
@@ -33,13 +34,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    return MaterialApp(
-      title: 'Asdf Logbook',
-      debugShowCheckedModeBanner: false,
-      themeMode: themeProvider.themeMode,
-      theme: MyTheme.lightTheme,
-      darkTheme: MyTheme.darkTheme,
-      home: const Wrapper(),
+    return StreamProvider<UserAuthModel?>.value(
+      value: UserAuthService().user,
+      initialData: null,
+      catchError: (context, e) {
+        debugPrint('Error in User Service: ${e.toString()}');
+        return null;
+      },
+      child: MaterialApp(
+        title: 'Asdf Logbook',
+        debugShowCheckedModeBanner: false,
+        themeMode: themeProvider.themeMode,
+        theme: MyTheme.lightTheme,
+        darkTheme: MyTheme.darkTheme,
+        home: const Wrapper(),
+      ),
     );
   }
 }

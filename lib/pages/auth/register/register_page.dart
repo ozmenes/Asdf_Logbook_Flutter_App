@@ -33,11 +33,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final UserService userService = UserService();
   late UserModel user;
   late String currentUid;
+  late bool isAccountCompany;
   @override
   void initState() {
     final FirebaseAuth auth = FirebaseAuth.instance;
     debugPrint("isAccountCompany ${widget.isAccountCompany}");
     //subscription.add(Subscription("Free", '-', false));
+    isAccountCompany = widget.isAccountCompany;
     user = UserModel();
      currentUid =  auth.currentUser?.uid ?? '';
     super.initState();
@@ -436,8 +438,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
       user.password = passwordController.text;
       user.userName = ownerNamedController.text;
       user.userPhone = phoneNumberController.text;
+      user.role = isAccountCompany == true ? 'Owner' : 'Driver';
       user.userAddress = addressController.text;
-      var id = await userService.addUser(user.toJson());
+
+      var id = await userService.addUser(user.toJson(),widget.isAccountCompany);
       debugPrint('user added. $id');
       if (userRegResult == null) {
         debugPrint("userReg Result error : $userRegResult");

@@ -1,3 +1,4 @@
+import 'package:asdf_logbook/models/user_auth_model.dart';
 import 'package:asdf_logbook/pages/auth/register/registration_driver_company.dart';
 import 'package:asdf_logbook/pages/home/home_page.dart';
 import 'package:asdf_logbook/pages/home/welcome_page.dart';
@@ -16,7 +17,13 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isChecked = false;
+  late UserAuthService userAuthService;
   final String loginError = 'could not sign in with those credentials.';
+  @override
+  void initState() {
+    userAuthService = UserAuthService();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -124,8 +131,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
-                            var result = '';
-                            if (result.isNotEmpty) {
+                            dynamic loginResult = await userAuthService
+                                .signInWithEmailAndPassword(emailController.text, passwordController.text);
+                            if (loginResult == null) {
                               debugPrint(loginError);
                             } else {
                               Navigator.push(

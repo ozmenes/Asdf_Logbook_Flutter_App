@@ -9,6 +9,7 @@ class UserModel {
   String? userEmail;
   String? userPhone;
   String? userAddress;
+  String? role;
   String? companyLicenceKey;
   UserModel(
       {this.uid,
@@ -17,6 +18,7 @@ class UserModel {
       this.userEmail,
       this.userPhone,
       this.userAddress,
+      this.role,
       this.companyLicenceKey});
   Map<String, dynamic> toJson() {
     return {
@@ -26,6 +28,7 @@ class UserModel {
       'userEmail': userEmail ?? '',
       'userPhone': userPhone ?? '',
       'userAddress': userAddress ?? '',
+      'role': role ?? '',
       'licence': companyLicenceKey ?? ''
     };
   }
@@ -37,6 +40,7 @@ class UserModel {
         userEmail = json['userEmail'] ?? '',
         userPhone = json['userPhone'] ?? '',
         userAddress = json['userAddress'] ?? '',
+        role = json['role'] ?? '',
         companyLicenceKey = json['companyLicenceKey'] ?? '';
 
   factory UserModel.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) =>
@@ -52,11 +56,16 @@ class UserService {
   FirebaseFirestore.instance.collection('companies');
   UserModel? userModel;
 
-  Future<String?> addUser(Map<String, dynamic> data) async {
+  Future<String?> addUser(Map<String, dynamic> data,bool isCompanyAcc) async {
     String uid = _auth.currentUser?.uid ?? '';
     await userRef.doc(uid).set(data).then((value)async{
-      var company = await companyRef.doc(uid).set({'uid':uid,'licence':uid});
-      return company;
+      if(isCompanyAcc == true){
+        var company = await companyRef.doc(uid).set({'uid':uid,'licence':uid});
+        return company;
+      }else{
+        return;
+      }
+
     });
     return uid;
   }
