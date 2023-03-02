@@ -1,4 +1,6 @@
+import 'package:asdf_logbook/models/company.dart';
 import 'package:asdf_logbook/utils/widgets/base_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends BasePage {
@@ -13,8 +15,12 @@ class HomePageState extends BasePageState<HomePage> {
   final formKey = GlobalKey<FormState>();
   final licenceCheckController = TextEditingController();
   final String licenceText = 'company_licence';
+  late CompanyService companyService;
+  late CompanyModel companyModel;
   @override
   void initState() {
+    companyModel = CompanyModel();
+    companyService = CompanyService();
     super.initState();
   }
   @override
@@ -86,10 +92,24 @@ class HomePageState extends BasePageState<HomePage> {
                   ),
                 ],
               ),
+              MaterialButton(
+                onPressed: ()=>_updateCompany(),
+                child: const Text('Update'),
+              ),
             ],
           ),
         )
       ],
     );
+  }
+  void _updateCompany()async{
+    try{
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      var companyId = auth.currentUser?.uid;
+
+      debugPrint('${companyModel.companyName} has updated.');
+    }catch(e){
+      debugPrint('${companyModel.companyName} could not updated.');
+    }
   }
 }
