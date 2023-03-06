@@ -106,7 +106,15 @@ class HomePageState extends BasePageState<HomePage> {
     try{
       final FirebaseAuth auth = FirebaseAuth.instance;
       var companyId = auth.currentUser?.uid;
+      // companyModel.companyName = 'Enes GmbH';
+      // companyModel.companyLicenceKey = companyId;
+      // companyModel.companyTd = companyId;
+      // companyModel.role = 'Owner';
+      // companyModel.companyPhone = '0123456789';
+      // companyModel.companyEmail = 'eneszmn@hotmail.com';
+      companyModel.companyAddress = 'KS';
 
+      await companyService.updateCompanyInfo(companyModel.toJson(), companyId!);
       debugPrint('${companyModel.companyName} has updated.');
     }catch(e){
       debugPrint('${companyModel.companyName} could not updated.');

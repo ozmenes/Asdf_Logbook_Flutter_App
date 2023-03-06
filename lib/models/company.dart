@@ -44,9 +44,16 @@ class CompanyModel {
       CompanyModel.fromJson(doc.data()!);
 }
 class CompanyService{
-
+  final CollectionReference<Map<String, dynamic>> companyRef =
+  FirebaseFirestore.instance.collection('companies');
   //add
+  Future<void> addCompanyInfo(Map<String, dynamic> data,String companyId)async{
+    await companyRef.doc(companyId).set(data);
+  }
   //update
+  Future<void> updateCompanyInfo(Map<String, dynamic> data,String companyId)async{
+    await companyRef.doc(companyId).update(data);
+  }
   //delete
   //search and list
 }
